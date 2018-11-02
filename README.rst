@@ -1,19 +1,11 @@
-SignNow
-=======
+FORKED SIGNNOW SDK 
 
-SignNow Python SDK
+See below for original SignNow sdk readme. This fork is a slightly altered version that I use. This is not maintained by the SignNow team. 
 
 About SignNow
 -------------
 
 SignNow is a powerful web-based e-signature solution that streamlines the signing process and overall document flow for businesses of any size. SignNow offers SaaS as well as public and private cloud deployment options using the same underlying API. With SignNow you can easily sign, share and manage documents in compliance with international data laws and industry-specific regulations. SignNow enables you to collect signatures from partners, employees and customers from any device within minutes. 
-
-API Contact Information
------------------------
-
-If you have questions about the SignNow API, please visit [https://help.signnow.com/docs](https://help.signnow.com/docs) or email [api@signnow.com](mailto:api@signnow.com).
-
-See additional contact information at the bottom.
 
 Installation
 ============
@@ -34,9 +26,9 @@ Setup
 
 .. code:: python
 
-    import signnow_python_sdk
+    import signnow
 
-    signnow_python_sdk.Config(client_id="YOUR_CLIENT_ID", client_secret="YOUR_CLIENT_SECRET", base_url="https://api-eval.signnow.com")
+    signnow.Config(client_id="YOUR_CLIENT_ID", client_secret="YOUR_CLIENT_SECRET", base_url="https://api-eval.signnow.com")
 
 Examples
 ========
@@ -51,14 +43,14 @@ Request OAuth Token
 
 .. code:: python
 
-    access_token = signnow_python_sdk.OAuth2.request_token("YOUR USERNAME", "YOUR PASSWORD")
+    access_token = signnow.OAuth2.request_token("YOUR USERNAME", "YOUR PASSWORD")
 
 Verify OAuth Token
 ------------------
 
 .. code:: python
 
-    access_token_verify = signnow_python_sdk.OAuth2.verify(AccessToken)
+    access_token_verify = signnow.OAuth2.verify(AccessToken)
 
 User
 ====
@@ -68,14 +60,14 @@ Create New User
 
 .. code:: python
 
-    new_user = signnow_python_sdk.User.create("name@domain.com", "newpassword", "Firstname", "Lastname")
+    new_user = signnow.User.create("name@domain.com", "newpassword", "Firstname", "Lastname")
 
 Retreive User Account Information
 ---------------------------------
 
 .. code:: python
 
-    sn_user = signnow_python_sdk.User.get(access_token)
+    sn_user = signnow.User.get(access_token)
 
 Document
 ========
@@ -86,10 +78,10 @@ Get Document
 .. code:: python
 
     # without annotations
-    document_data = signnow_python_sdk.Document.get(access_token, "YOUR_DOCUMENT_ID")
+    document_data = signnow.Document.get(access_token, "YOUR_DOCUMENT_ID")
 
     # with annotations
-    document_data = signnow_python_sdk.Document.get(access_token, "YOUR_DOCUMENT_ID", True)
+    document_data = signnow.Document.get(access_token, "YOUR_DOCUMENT_ID", True)
 
 Create New Document
 -------------------
@@ -97,7 +89,7 @@ Create New Document
 .. code:: python
 
     dir_path = os.path.dirname(os.path.realpath(__file__)) + '/testing123.pdf'
-    doc_id = signnow_python_sdk.Document.upload(access_token, dir_path, False)
+    doc_id = signnow.Document.upload(access_token, dir_path, False)
 
 Create New Document and Extract the Fields
 ------------------------------------------
@@ -105,7 +97,7 @@ Create New Document and Extract the Fields
 .. code:: python
 
     dir_path = os.path.dirname(os.path.realpath(__file__)) + '/testing123.pdf'
-    doc_id = signnow_python_sdk.Document.upload(access_token, dir_path)
+    doc_id = signnow.Document.upload(access_token, dir_path)
 
 Update Document
 ---------------
@@ -139,14 +131,14 @@ Update Document
         ]
     }
 
-    update_doc_res = signnow_python_sdk.Document.update(access_token, doc_id, update_payload)
+    update_doc_res = signnow.Document.update(access_token, doc_id, update_payload)
 
 Delete Document
 ---------------
 
 .. code:: python
 
-    delete_doc_res = signnow_python_sdk.Document.delete(access_token, doc_id)
+    delete_doc_res = signnow.Document.delete(access_token, doc_id)
 
 Download Document
 -----------------
@@ -154,10 +146,10 @@ Download Document
 .. code:: python
 
     # without history
-    download_doc_res = signnow_python_sdk.Document.download(access_token, "YOUR DOCUMENT ID", "/", "sample")
+    download_doc_res = signnow.Document.download(access_token, "YOUR DOCUMENT ID", "/", "sample")
 
     # with history
-    download_doc_res = signnow_python_sdk.Document.download(access_token, "YOUR DOCUMENT ID", "/", "sample", True)
+    download_doc_res = signnow.Document.download(access_token, "YOUR DOCUMENT ID", "/", "sample", True)
 
 Send Free Form Invite
 ---------------------
@@ -170,7 +162,7 @@ Send Free Form Invite
       "to": "name@domain.com"
     }
 
-    freeform_invite_res = signnow_python_sdk.Document.invite(access_token, "YOUR DOCUMENT ID", invite_payload)
+    freeform_invite_res = signnow.Document.invite(access_token, "YOUR DOCUMENT ID", invite_payload)
 
 Send Role-based Invite
 ----------------------
@@ -208,14 +200,14 @@ Send Role-based Invite
       "message": "YOUR MESSAGE"
     };
 
-    role_based_invite_res = signnow_python_sdk.Document.invite(access_token, "YOUR DOCUMENT ID", invite_payload)
+    role_based_invite_res = signnow.Document.invite(access_token, "YOUR DOCUMENT ID", invite_payload)
 
 Cancel Invite
 -------------
 
 .. code:: python
 
-    cancel_invite_res = signnow_python_sdk.Document.cancel_invite(access_token, "YOUR DOCUMENT ID");
+    cancel_invite_res = signnow.Document.cancel_invite(access_token, "YOUR DOCUMENT ID");
 
 Merge Existing Documents
 ------------------------
@@ -227,14 +219,14 @@ Merge Existing Documents
       "document_ids": ["YOUR DOCUMENT ID", "YOUR DOCUMENT ID"]
     }
 
-    merge_doc_res = signnow_python_sdk.Document.merge_and_download(access_token, mergeDocsObj, "/", "sample-merge");
+    merge_doc_res = signnow.Document.merge_and_download(access_token, mergeDocsObj, "/", "sample-merge");
 
 Document History
 ----------------
 
 .. code:: python
 
-    doc_history_res = signnow_python_sdk.Document.get_history(access_token, "YOUR DOCUMENT ID");
+    doc_history_res = signnow.Document.get_history(access_token, "YOUR DOCUMENT ID");
 
 Template
 ========
@@ -244,14 +236,14 @@ Create Template
 
 .. code:: python
 
-    new_template_res = signnow_python_sdk.Template.create(access_token, "YOUR DOCUMENT ID", "My New Template");
+    new_template_res = signnow.Template.create(access_token, "YOUR DOCUMENT ID", "My New Template");
 
 Copy Template
 -------------
 
 .. code:: python
 
-    copy_template_res = signnow_python_sdk.Template.copy(access_token, "YOUR TEMPLATE ID", "My Copy Template Doc");
+    copy_template_res = signnow.Template.copy(access_token, "YOUR TEMPLATE ID", "My Copy Template Doc");
 
 Folder
 ======
@@ -281,14 +273,14 @@ Get users root folder
 
 .. code:: python
 
-    root_folder_Res = signnow_python_sdk.Folder.root_folder(access_token);
+    root_folder_Res = signnow.Folder.root_folder(access_token);
 
 Get Folder
 ----------
 
 .. code:: python
 
-    get_folder_res = signnow_python_sdk.Folder.get(access_token, "YOUR FOLDER ID");
+    get_folder_res = signnow.Folder.get(access_token, "YOUR FOLDER ID");
 
 Webhook
 =======
@@ -312,21 +304,21 @@ Create Webhook
 
 .. code:: python
 
-    createWebhookRes = signnow_python_sdk.Webhook.create(access_token, "document.create", "YOUR URL");
+    createWebhookRes = signnow.Webhook.create(access_token, "document.create", "YOUR URL");
 
 List Webhooks
 -------------
 
 .. code:: python
 
-    list_webhooks_res = signnow_python_sdk.Webhook.list_all(access_token);
+    list_webhooks_res = signnow.Webhook.list_all(access_token);
 
 Delete Webhook
 --------------
 
 .. code:: python
 
-    delete_webhook_res = signnow_python_sdk.Webhook.delete(AccessToken, "YOUR WEBHOOK ID");
+    delete_webhook_res = signnow.Webhook.delete(AccessToken, "YOUR WEBHOOK ID");
 
 Link
 ====
@@ -336,7 +328,7 @@ Create Link
 
 .. code:: python
 
-    create_link_res = signnow_python_sdk.Link.create(access_token, "YOUR DOCUMENT ID");
+    create_link_res = signnow.Link.create(access_token, "YOUR DOCUMENT ID");
 
 Additional Contact Information
 ==============================
