@@ -1,8 +1,8 @@
 from unirest import get, post
 from config import Config
 
-class OAuth2(object):
 
+class OAuth2(object):
     @staticmethod
     def request_token(username, password, scope="*"):
         """Request a new oauth2 token from the Signnow API using unirest
@@ -16,17 +16,21 @@ class OAuth2(object):
             dict: The JSON response from the API which includes the attributes of the token
             or the error returned.
         """
-        OAUTH2_TOKEN_URL = Config().get_base_url() + '/oauth2/token'
-        request = post(OAUTH2_TOKEN_URL, params={
-            "username": username,
-            "password": password,
-            "grant_type": "password",
-            "scope": scope
-        }, headers={
-            "Authorization": "Basic " + Config().get_encoded_credentials(),
-            "Accept": "application/json",
-            "Content-Type": "application/x-www-form-urlencoded"
-        })
+        OAUTH2_TOKEN_URL = Config().get_base_url() + "/oauth2/token"
+        request = post(
+            OAUTH2_TOKEN_URL,
+            params={
+                "username": username,
+                "password": password,
+                "grant_type": "password",
+                "scope": scope,
+            },
+            headers={
+                "Authorization": "Basic " + Config().get_encoded_credentials(),
+                "Accept": "application/json",
+                "Content-Type": "application/x-www-form-urlencoded",
+            },
+        )
 
         return request.body
 
@@ -41,10 +45,13 @@ class OAuth2(object):
             dict: The JSON response from the API which includes the attributes of the token
             or the error returned.
         """
-        OAUTH2_TOKEN_URL = Config().get_base_url() + '/oauth2/token'
-        request = get(OAUTH2_TOKEN_URL, headers={
-            "Authorization": "Bearer " + access_token,
-            "Accept": "application/json"
-        })
+        OAUTH2_TOKEN_URL = Config().get_base_url() + "/oauth2/token"
+        request = get(
+            OAUTH2_TOKEN_URL,
+            headers={
+                "Authorization": "Bearer " + access_token,
+                "Accept": "application/json",
+            },
+        )
 
         return request.body

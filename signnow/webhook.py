@@ -4,7 +4,6 @@ from json import dumps
 
 
 class Webhook(object):
-
     @staticmethod
     def list_all(access_token):
         """Returns a list of all the event subscriptions/webhooks for an account.
@@ -15,10 +14,13 @@ class Webhook(object):
         Returns:
             dict: A dictionary representing the JSON data of the event subscriptions or the error returned by the API.
         """
-        response = get(Config().get_base_url() + '/event_subscription', headers={
-            "Authorization": "Bearer " + access_token,
-            "Accept": "application/json"
-        })
+        response = get(
+            Config().get_base_url() + "/event_subscription",
+            headers={
+                "Authorization": "Bearer " + access_token,
+                "Accept": "application/json",
+            },
+        )
 
         return response.body
 
@@ -34,14 +36,15 @@ class Webhook(object):
         Returns:
             dict: The JSON response of the newly created event subscription or the error returned by the API
         """
-        response = post(Config().get_base_url() + '/event_subscription', headers={
-            "Authorization": "Bearer " + access_token,
-            "Content-Type": "application/json",
-            "Accept": "application/json"
-        }, params = dumps({
-            "event": event,
-            "callback_url": callback_url
-        }))
+        response = post(
+            Config().get_base_url() + "/event_subscription",
+            headers={
+                "Authorization": "Bearer " + access_token,
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+            },
+            params=dumps({"event": event, "callback_url": callback_url}),
+        )
 
         return response.body
 
@@ -56,9 +59,12 @@ class Webhook(object):
         Returns:
             dict: The JSON response from the API with the id of the deleted subscription or an API error.
         """
-        response = delete(Config().get_base_url() + '/event_subscription/' + subscription_id, headers={
-            "Authorization": "Bearer " + access_token,
-            "Accept": "application/json"
-        })
+        response = delete(
+            Config().get_base_url() + "/event_subscription/" + subscription_id,
+            headers={
+                "Authorization": "Bearer " + access_token,
+                "Accept": "application/json",
+            },
+        )
 
         return response.body

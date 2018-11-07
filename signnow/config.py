@@ -1,12 +1,12 @@
 from base64 import b64encode
 import unirest
 
-CLIENT_ID = ''
-CLIENT_SECRET = ''
-BASE_URL = ''
+CLIENT_ID = ""
+CLIENT_SECRET = ""
+BASE_URL = ""
+
 
 class Config(object):
-
     def __init__(self, options=None, **kwargs):
         global CLIENT_ID, CLIENT_SECRET, BASE_URL
         dicts = [options or {}, kwargs]
@@ -19,14 +19,14 @@ class Config(object):
             for k, v in kwargs.iteritems():
                 setattr(self, k, v)
 
-            if 'client_id' in kwargs:
-                CLIENT_ID = kwargs['client_id']
-            if 'client_secret' in kwargs:
-                CLIENT_SECRET = kwargs['client_secret']
-            if 'base_url' in kwargs:
-                BASE_URL = kwargs['base_url']
-            if 'timeout' in kwargs:
-                unirest.timeout(kwargs['timeout'])
+            if "client_id" in kwargs:
+                CLIENT_ID = kwargs["client_id"]
+            if "client_secret" in kwargs:
+                CLIENT_SECRET = kwargs["client_secret"]
+            if "base_url" in kwargs:
+                BASE_URL = kwargs["base_url"]
+            if "timeout" in kwargs:
+                unirest.timeout(kwargs["timeout"])
         else:
             self.client_id = CLIENT_ID
             self.client_secret = CLIENT_SECRET
@@ -42,4 +42,4 @@ class Config(object):
         return self.base_url
 
     def get_encoded_credentials(self):
-        return b64encode(self.client_id + ':' + self.client_secret)
+        return b64encode(self.client_id + ":" + self.client_secret)

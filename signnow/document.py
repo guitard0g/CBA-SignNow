@@ -6,7 +6,6 @@ import os
 
 
 class Document(object):
-
     @staticmethod
     def get(access_token, document_id, with_annotation=False):
         """Request a document from the Signnow API  by document id using unirest
@@ -20,10 +19,16 @@ class Document(object):
             dict: The JSON response from the API which includes the attributes of the document
                 or the error returned.
         """
-        response = get(Config().get_base_url() + '/document/' + document_id + ('?with_annotation=true' if with_annotation else ''), headers={
-            "Authorization": "Bearer " + access_token,
-            "Accept": "application/json"
-        })
+        response = get(
+            Config().get_base_url()
+            + "/document/"
+            + document_id
+            + ("?with_annotation=true" if with_annotation else ""),
+            headers={
+                "Authorization": "Bearer " + access_token,
+                "Accept": "application/json",
+            },
+        )
 
         return response.body
 
@@ -41,13 +46,15 @@ class Document(object):
                 or the error returned.
         """
         timeout(60)
-        response = post(Config().get_base_url() + '/document' , headers={
-            "Authorization": "Bearer " + access_token
-        }, params={
-            "file": open(file_path, mode="r"),
-            "client_timestamp": datetime.now().strftime("%s"),
-            "check_fields": field_extract
-        })
+        response = post(
+            Config().get_base_url() + "/document",
+            headers={"Authorization": "Bearer " + access_token},
+            params={
+                "file": open(file_path, mode="r"),
+                "client_timestamp": datetime.now().strftime("%s"),
+                "check_fields": field_extract,
+            },
+        )
 
         return response.body
 
@@ -65,16 +72,26 @@ class Document(object):
             dict: The JSON response from the API which includes the document id and arrays of elements added to the
                 document
         """
-        response = put(Config().get_base_url() + '/document/' + document_id, headers={
-            "Authorization": "Bearer " + access_token,
-            "Content-Type": "application/json",
-            "Accept": "application/json"
-        }, params=dumps(data_payload))
+        response = put(
+            Config().get_base_url() + "/document/" + document_id,
+            headers={
+                "Authorization": "Bearer " + access_token,
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+            },
+            params=dumps(data_payload),
+        )
 
         return response.body
 
     @staticmethod
-    def download(access_token, document_id, file_name='my-collapsed-document', file_path='', with_history=False):
+    def download(
+        access_token,
+        document_id,
+        file_name="my-collapsed-document",
+        file_path="",
+        with_history=False,
+    ):
         """Download a document from a signnow account and save it to a specified file path and file name
 
         Args:
@@ -88,26 +105,31 @@ class Document(object):
             str or dict: The byte string of the document's raw data being returned by the API. If there is an error it
                 will return a dictionary with error data.
         """
-        response = get(Config().get_base_url() + '/document/' + document_id + '/download/collapsed' + ('?with_history=1' if with_history else ''), headers={
-            "Authorization": "Bearer " + access_token
-        })
+        response = get(
+            Config().get_base_url()
+            + "/document/"
+            + document_id
+            + "/download/collapsed"
+            + ("?with_history=1" if with_history else ""),
+            headers={"Authorization": "Bearer " + access_token},
+        )
 
-        if file_path != '':
-            path = os.path.abspath(file_path) + '/' + file_name + '.pdf'
+        if file_path != "":
+            path = os.path.abspath(file_path) + "/" + file_name + ".pdf"
         else:
-            path = os.getcwd() + '/' + file_name + '.pdf'
+            path = os.getcwd() + "/" + file_name + ".pdf"
 
         if not os.path.isfile(path):
-            new_file = open(path, 'wb+')
+            new_file = open(path, "wb+")
             new_file.write(response.raw_body)
             new_file.close()
         else:
             file_path, full_file_name = os.path.split(path)
             file_name, file_extension = os.path.splitext(full_file_name)
             i = 1
-            while os.path.exists(file_path + '/' + file_name + '(%s).pdf' % i):
+            while os.path.exists(file_path + "/" + file_name + "(%s).pdf" % i):
                 i += 1
-            new_file = open(file_path + '/' + file_name + '(%s).pdf' % i, 'wb+')
+            new_file = open(file_path + "/" + file_name + "(%s).pdf" % i, "wb+")
             new_file.write(response.raw_body)
             new_file.close()
 
@@ -124,10 +146,13 @@ class Document(object):
         Returns:
             dict: The JSON response from the API {u'result': u'success'} or JSON representing an API error.
         """
-        response = delete(Config().get_base_url() + '/document/' + document_id, headers={
-            "Authorization": "Bearer " + access_token,
-            "Accept": "application/json"
-        })
+        response = delete(
+            Config().get_base_url() + "/document/" + document_id,
+            headers={
+                "Authorization": "Bearer " + access_token,
+                "Accept": "application/json",
+            },
+        )
 
         return response.body
 
@@ -143,11 +168,15 @@ class Document(object):
         Returns:
             dict: The JSON response from the API {u'result': u'success'} or JSON representing an API error.
         """
-        response =  post(Config().get_base_url() + '/document/' + document_id + '/invite', headers={
-            "Authorization": "Bearer " + access_token,
-            "Accept": "application/json",
-            "Content-Type": "application/json"
-        }, params=dumps(invite_payload))
+        response = post(
+            Config().get_base_url() + "/document/" + document_id + "/invite",
+            headers={
+                "Authorization": "Bearer " + access_token,
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+            },
+            params=dumps(invite_payload),
+        )
 
         return response.body
 
@@ -162,10 +191,13 @@ class Document(object):
         Returns:
             dict: The JSON response from the API {u'result': u'success'} or JSON representing an API error.
         """
-        response = put(Config().get_base_url() + '/document/' + document_id + '/fieldinvitecancel', headers={
-            "Authorization": "Bearer " + access_token,
-            "Accept": "application/json",
-        })
+        response = put(
+            Config().get_base_url() + "/document/" + document_id + "/fieldinvitecancel",
+            headers={
+                "Authorization": "Bearer " + access_token,
+                "Accept": "application/json",
+            },
+        )
 
         return response.body
 
@@ -180,16 +212,21 @@ class Document(object):
         Returns:
             dict: The JSON response from the API with the download link or JSON representing an API error.
         """
-        response = post(Config().get_base_url() + '/document/' + document_id + '/download/link', headers={
-            "Authorization": "Bearer " + access_token,
-            "Accept": "application/json",
-            "Content-Type": "application/json"
-        })
+        response = post(
+            Config().get_base_url() + "/document/" + document_id + "/download/link",
+            headers={
+                "Authorization": "Bearer " + access_token,
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+            },
+        )
 
         return response.body
 
     @staticmethod
-    def merge_and_download(access_token, document_ids, file_name='my-merged-document', file_path=''):
+    def merge_and_download(
+        access_token, document_ids, file_name="my-merged-document", file_path=""
+    ):
         """Merges two or more documents and then saves the response to a specified file name and file path
 
         Args:
@@ -203,30 +240,31 @@ class Document(object):
             error it will return a dictionary with error data.
         """
         print type(document_ids)
-        response = post(Config().get_base_url() + '/document/merge', headers={
-            "Authorization": "Bearer " + access_token,
-            "Content-Type": "application/json"
-        }, params=dumps({
-            "name": file_name,
-            "document_ids": document_ids
-        }))
+        response = post(
+            Config().get_base_url() + "/document/merge",
+            headers={
+                "Authorization": "Bearer " + access_token,
+                "Content-Type": "application/json",
+            },
+            params=dumps({"name": file_name, "document_ids": document_ids}),
+        )
 
-        if file_path != '':
-            path = os.path.abspath(file_path) + '/' + file_name + '.pdf'
+        if file_path != "":
+            path = os.path.abspath(file_path) + "/" + file_name + ".pdf"
         else:
-            path = os.getcwd() + '/' + file_name + '.pdf'
+            path = os.getcwd() + "/" + file_name + ".pdf"
 
         if not os.path.isfile(path):
-            new_file = open(path, 'wb+')
+            new_file = open(path, "wb+")
             new_file.write(response.raw_body)
             new_file.close()
         else:
             file_path, full_file_name = os.path.split(path)
             file_name, file_extension = os.path.splitext(full_file_name)
             i = 1
-            while os.path.exists(file_path + '/' + file_name + '(%s).pdf' % i):
+            while os.path.exists(file_path + "/" + file_name + "(%s).pdf" % i):
                 i += 1
-            new_file = open(file_path + '/' + file_name + '(%s).pdf' % i, 'wb+')
+            new_file = open(file_path + "/" + file_name + "(%s).pdf" % i, "wb+")
             new_file.write(response.raw_body)
             new_file.close()
 
@@ -243,10 +281,13 @@ class Document(object):
         Returns:
             list: A list of document history events or JSON representing an API error.
         """
-        response = get(Config().get_base_url() + '/document/' + document_id + '/historyfull', headers={
-            "Authorization": "Bearer " + access_token,
-            "Accept": "application/json"
-        })
+        response = get(
+            Config().get_base_url() + "/document/" + document_id + "/historyfull",
+            headers={
+                "Authorization": "Bearer " + access_token,
+                "Accept": "application/json",
+            },
+        )
 
         return response.body
 
@@ -262,12 +303,14 @@ class Document(object):
         Returns:
             dict: The JSON response from the API {u'result': u'success'} or JSON representing an API error.
         """
-        response = post(Config().get_base_url() + '/document/' + document_id + '/move', headers={
-            "Authorization": "Bearer " + access_token,
-            "Accept": "application/json",
-            "Content-Type": "application/json"
-        }, params=dumps({
-            "folder_id": folder_id
-        }))
+        response = post(
+            Config().get_base_url() + "/document/" + document_id + "/move",
+            headers={
+                "Authorization": "Bearer " + access_token,
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+            },
+            params=dumps({"folder_id": folder_id}),
+        )
 
         return response.body

@@ -4,7 +4,6 @@ from json import dumps
 
 
 class Template(object):
-
     @staticmethod
     def create(access_token, document_id, template_name=None):
         """Converts a document to a template and places it in the Templates folder
@@ -17,14 +16,15 @@ class Template(object):
         Returns:
             dict: A dictionary representing the JSON response which includes the id of the new template or an error.
         """
-        response = post(Config().get_base_url() + '/template', headers={
-            "Authorization": "Bearer " + access_token,
-            "Content-Type": "application/json",
-            "Accept": "application/json"
-        }, params=dumps({
-            "document_id": document_id,
-            "document_name": template_name
-        }))
+        response = post(
+            Config().get_base_url() + "/template",
+            headers={
+                "Authorization": "Bearer " + access_token,
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+            },
+            params=dumps({"document_id": document_id, "document_name": template_name}),
+        )
 
         return response.body
 
@@ -40,12 +40,14 @@ class Template(object):
             dict: A dictionary representing the JSON response which includes the unique id of the document created from
                 the template
         """
-        response = post(Config().get_base_url() + '/template/' + template_id + '/copy', headers={
-            "Authorization": "Bearer " + access_token,
-            "Content-Type": "application/json",
-            "Accept": "application/json"
-        }, params=dumps({
-            "document_name": document_name
-        }))
+        response = post(
+            Config().get_base_url() + "/template/" + template_id + "/copy",
+            headers={
+                "Authorization": "Bearer " + access_token,
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+            },
+            params=dumps({"document_name": document_name}),
+        )
 
         return response.body

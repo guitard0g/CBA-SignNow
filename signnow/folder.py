@@ -3,7 +3,6 @@ from config import Config
 
 
 class Folder(object):
-
     @staticmethod
     def root_folder(access_token):
         """Return information about a users root folder including an array of all their folders like \"Documents\",
@@ -15,15 +14,25 @@ class Folder(object):
         Returns:
             dict: A dictionary representing the JSON data of the root folder or the error returned by the API
         """
-        response = get(Config().get_base_url() + '/folder', headers={
-            "Authorization": "Bearer " + access_token,
-            "Accept": "application/json"
-        })
+        response = get(
+            Config().get_base_url() + "/folder",
+            headers={
+                "Authorization": "Bearer " + access_token,
+                "Accept": "application/json",
+            },
+        )
 
         return response.body
 
     @staticmethod
-    def get(access_token, folder_id, number_of_documents=20, offset=0, filter_object={}, sort_object={}):
+    def get(
+        access_token,
+        folder_id,
+        number_of_documents=20,
+        offset=0,
+        filter_object={},
+        sort_object={},
+    ):
         """Return the JSON data of a folder including its subfolders, documents and other data.
 
         Args:
@@ -40,18 +49,40 @@ class Folder(object):
         if number_of_documents > 100:
             number_of_documents = 100
 
-        folder_url = Config().get_base_url() + '/folder/' + folder_id + '/?offset=' + str(offset) + '&limit=' + \
-                     str(number_of_documents)
+        folder_url = (
+            Config().get_base_url()
+            + "/folder/"
+            + folder_id
+            + "/?offset="
+            + str(offset)
+            + "&limit="
+            + str(number_of_documents)
+        )
 
-        if 'filters' in filter_object and 'filter-values' in filter_object:
-            folder_url = folder_url + '&filters=' + filter_object['filters'] + '&filter-values=' + filter_object['filter-values']
+        if "filters" in filter_object and "filter-values" in filter_object:
+            folder_url = (
+                folder_url
+                + "&filters="
+                + filter_object["filters"]
+                + "&filter-values="
+                + filter_object["filter-values"]
+            )
 
-        if 'sortby' in sort_object and 'order' in sort_object:
-            folder_url = folder_url + '&sortby=' + sort_object['sortby'] + '&order=' + sort_object['order']
+        if "sortby" in sort_object and "order" in sort_object:
+            folder_url = (
+                folder_url
+                + "&sortby="
+                + sort_object["sortby"]
+                + "&order="
+                + sort_object["order"]
+            )
 
-        response = get(folder_url, headers= {
-            "Authorization": "Bearer " + access_token,
-            "Accept": "application/json"
-        })
+        response = get(
+            folder_url,
+            headers={
+                "Authorization": "Bearer " + access_token,
+                "Accept": "application/json",
+            },
+        )
 
         return response.body

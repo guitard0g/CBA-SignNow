@@ -4,7 +4,6 @@ from json import dumps, loads
 
 
 class User(object):
-
     @staticmethod
     def create(email, password, first_name=None, last_name=None):
         """Creates a new user in the signnow system.
@@ -18,16 +17,22 @@ class User(object):
         Returns:
             dict: A dictionary representing the JSON response for the created user API or error returned.
         """
-        request = post(Config().get_base_url() + '/user', headers = {
-            "Authorization": "Basic " + Config().get_encoded_credentials(),
-            "Accept": "application/json",
-            "Content-Type": "application/json"
-        }, params=dumps({
-            "email": email,
-            "password": password,
-            "first_name": first_name,
-            "last_name": last_name
-        }))
+        request = post(
+            Config().get_base_url() + "/user",
+            headers={
+                "Authorization": "Basic " + Config().get_encoded_credentials(),
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+            },
+            params=dumps(
+                {
+                    "email": email,
+                    "password": password,
+                    "first_name": first_name,
+                    "last_name": last_name,
+                }
+            ),
+        )
 
         return request.body
 
@@ -41,10 +46,13 @@ class User(object):
         Returns:
             dict: A dictionary representing the JSON response for the user retrieved from the API or the error returned.
         """
-        USER_URL = Config().get_base_url() + '/user'
-        request = get(USER_URL , headers={
-            "Authorization": "Bearer " + access_token,
-            "Accept": "application/json"
-        })
+        USER_URL = Config().get_base_url() + "/user"
+        request = get(
+            USER_URL,
+            headers={
+                "Authorization": "Bearer " + access_token,
+                "Accept": "application/json",
+            },
+        )
 
         return request.body

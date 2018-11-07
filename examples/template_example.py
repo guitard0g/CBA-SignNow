@@ -47,9 +47,7 @@ if __name__ == "__main__":
     doc_id = signnow.Template.copy(
         access_token["access_token"], template_id["id"], "New Doc From Template"
     )
-    document_data = signnow.Document.get(
-        access_token["access_token"], doc_id["id"]
-    )
+    document_data = signnow.Document.get(access_token["access_token"], doc_id["id"])
     print "The doucments's id:", document_data["id"]
     print "The document's name:", document_data["document_name"]
     print "The document's owner:", document_data["owner"]
