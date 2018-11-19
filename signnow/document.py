@@ -59,6 +59,47 @@ class Document(object):
         return response.body
 
     @staticmethod
+    def upload_with_complex_tags(access_token, file_path, payload):
+        """Request a document from the Signnow API  by document id using unirest
+
+        Args:
+            access_token (str): The access token for a user account you want to upload the document to.
+            file_path (str): The file path to the document you want to upload to signnow.
+            payload (list(dict)): A list of the tag data dicts to build the document with
+            format:
+            {
+                "tag_name": "DateofBirth",
+                "role":"COAPP",
+                "label":"Date_of_Birth",
+                "required":true,
+                "type":"text",
+                "prefilled_text":"something",
+                "height":15,
+                "width":100,
+                "validator_id":"13435fa6c2a17f83177fcbb5c4a9376ce85befeb"
+            }
+
+        Returns:
+            dict: The JSON response from the API which includes the id of the document uploaded.
+                or the error returned.
+        """
+        timeout(60)
+        response = post(
+            Config().get_base_url() + "/document/fieldextract",
+            headers={
+                "Authorization": "Bearer " + access_token,
+                "Content-Type": "multipart/form-data",
+            },
+            params={
+                "file": open(file_path, mode="r"),
+                "client_timestamp": datetime.now().strftime("%s"),
+                "Tags": dumps(payload),
+            },
+        )
+
+        return response.body
+
+    @staticmethod
     def update(access_token, document_id, data_payload):
         """Update a document with fields, texts, and check marks.
 
@@ -157,7 +198,7 @@ class Document(object):
         return response.body
 
     @staticmethod
-    def invite(access_token, document_id, invite_payload):
+    def invite(access_token, document_id, invite_payload, suppress_email=False):
         """Send an invite for a document via the API
 
         Args:
@@ -168,8 +209,15 @@ class Document(object):
         Returns:
             dict: The JSON response from the API {u'result': u'success'} or JSON representing an API error.
         """
+        url = (
+            Config().get_base_url()
+            + "/document/"
+            + document_id
+            + "/invite"
+            + ("?email=disable" if suppress_email else "")
+        )
         response = post(
-            Config().get_base_url() + "/document/" + document_id + "/invite",
+            url,
             headers={
                 "Authorization": "Bearer " + access_token,
                 "Accept": "application/json",
