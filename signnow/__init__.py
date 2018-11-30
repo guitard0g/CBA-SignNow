@@ -6,3 +6,4 @@ from signnow.template import Template
 from signnow.folder import Folder
 from signnow.webhook import Webhook
 from signnow.link import Link
+from signnow.tags import Tags
