@@ -1,5 +1,5 @@
 from unirest import get, post, put, delete, timeout
-from config import Config
+from .config import Config
 from json import dumps
 from datetime import datetime
 import os
@@ -287,7 +287,7 @@ class Document(object):
             str or dict: The byte string of the merged document's raw data being returned by the API. If there is an
             error it will return a dictionary with error data.
         """
-        print type(document_ids)
+        print(type(document_ids))
         response = post(
             Config().get_base_url() + "/document/merge",
             headers={

@@ -1,5 +1,5 @@
 from unirest import get
-from config import Config
+from .config import Config
 
 
 class Folder(object):

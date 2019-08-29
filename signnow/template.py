@@ -1,5 +1,5 @@
 from unirest import post
-from config import Config
+from .config import Config
 from json import dumps
 
 

@@ -13,21 +13,21 @@ if __name__ == "__main__":
     password = ""
 
     # Create the access_token for the user
-    print "Creating access token:"
+    print("Creating access token:")
     access_token = signnow.OAuth2.request_token(username, password, "*")
-    print username + "'s access token: " + access_token["access_token"]
-    print "The access token's scope: " + access_token["scope"]
-    print "\n"
+    print(username + "'s access token: " + access_token["access_token"])
+    print("The access token's scope: " + access_token["scope"])
+    print("\n")
 
     # Upload a new document
-    print "Uploading a new document:"
+    print("Uploading a new document:")
     dir_path = os.path.dirname(os.path.realpath(__file__)) + "/testing123.pdf"
     doc_id = signnow.Document.upload(access_token["access_token"], dir_path)
-    print "Uploaded document's id:", doc_id["id"]
-    print "\n"
+    print("Uploaded document's id:", doc_id["id"])
+    print("\n")
 
     # Create the signing links for a document.
-    print "Creating a signing link for the document:"
+    print("Creating a signing link for the document:")
     links = signnow.Link.create(access_token["access_token"], doc_id["id"])
-    print "The  link is:", links["url"]
-    print "The no sign up link is:", links["url_no_signup"]
+    print("The  link is:", links["url"])
+    print("The no sign up link is:", links["url_no_signup"])

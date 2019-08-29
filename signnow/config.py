@@ -12,11 +12,11 @@ class Config(object):
         dicts = [options or {}, kwargs]
 
         for d in dicts:
-            for k, v in d.iteritems():
+            for k, v in d.items():
                 kwargs.setdefault(k, v)
 
         if len(kwargs):
-            for k, v in kwargs.iteritems():
+            for k, v in kwargs.items():
                 setattr(self, k, v)
 
             if "client_id" in kwargs:

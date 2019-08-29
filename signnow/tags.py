@@ -99,7 +99,7 @@ class Tags(object):
     def __dropdown_validator(dropdown):
         dd_string = '"'
         for option in dropdown:
-            if not isinstance(option, basestring):
+            if not isinstance(option, str):
                 raise InvalidArgumentError("non-string dropdown option")
             else:
                 dd_string = dd_string + str(option) + ","
@@ -120,7 +120,7 @@ class Tags(object):
 
     @staticmethod
     def __validator_validator(validator):
-        if validator in Tags.DATA_VALIDATOR_DICT.values():
+        if validator in list(Tags.DATA_VALIDATOR_DICT.values()):
             return '"' + validator + '"'
         raise InvalidArgumentError("invalid validator")
 
@@ -144,7 +144,7 @@ class Tags(object):
             key, val = arg
             return key, Tags.__run_validator(key, val)
 
-        formatted_args = dict(map(validate, args.items()))
+        formatted_args = dict(list(map(validate, list(args.items()))))
         if "type" not in formatted_args:
             raise MissingArgumentError("type argument is required")
         if "role" not in formatted_args:

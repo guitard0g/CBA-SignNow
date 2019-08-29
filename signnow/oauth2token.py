@@ -1,5 +1,5 @@
 from unirest import get, post
-from config import Config
+from .config import Config
 
 
 class OAuth2(object):
